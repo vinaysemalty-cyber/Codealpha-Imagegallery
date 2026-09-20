@@ -2,115 +2,277 @@
    GENERAL PAGE STYLES
    ============================ */
 
-/* Reset default margin/padding and use a simple box model everywhere */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #9ded71;
+    color: #333;
 }
 
-/* Style the header at the top of the page */
+/* Header */
+
 header {
-  text-align: center;
-  padding: 30px 20px;
-  background-color: #222;
-  color: #fff;
+    text-align: center;
+    padding: 30px 20px;
+    background-color: #222;
+    color: #fff;
 }
 
 header h1 {
-  margin-bottom: 8px;
+    margin-bottom: 8px;
 }
+
 
 /* ============================
    GALLERY GRID LAYOUT
    ============================ */
 
-/* 
-  We use CSS Grid to arrange the images.
-  "auto-fill" + "minmax" makes the grid responsive:
-  it automatically adds/removes columns depending on screen width.
-*/
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 15px;
-  padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    padding: 20px;
 }
 
-/* Each image container */
+/* Gallery Items */
+
 .gallery-item {
-  overflow: hidden;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  cursor: pointer; /* Shows a "hand" cursor so users know it's clickable */
-  transition: transform 0.2s ease; /* Smooth zoom effect on hover */
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
-/* Make the images fill their container nicely */
 .gallery-item img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover; /* Crops the image so it fills the box without stretching */
-  display: block;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
 }
 
-/* A little "pop" effect when you hover over an image */
+/* Hover Effect */
+
 .gallery-item:hover {
-  transform: scale(1.03);
+    transform: scale(1.03);
 }
+
 
 /* ============================
    LIGHTBOX (POPUP) STYLES
    ============================ */
 
-/* 
-  The lightbox covers the whole screen with a dark background.
-  It's hidden by default using "display: none" and
-  script.js will switch it to "display: flex" when needed.
-*/
 .lightbox {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0, 0, 0, 0.85);
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000;
 }
 
-/* This class is added by JavaScript to actually show the lightbox */
+/* Show Lightbox */
+
 .lightbox.active {
-  display: flex;
+    display: flex;
 }
 
-/* The enlarged image inside the lightbox */
+/* Enlarged Image */
+
 .lightbox img {
-  max-width: 90%;
-  max-height: 85%;
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    max-width: 80%;
+    max-height: 85%;
+
+    border-radius: 8px;
+
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
-/* The "X" close button in the top corner */
+
+/* ============================
+   CLOSE BUTTON
+   ============================ */
+
 .close-btn {
-  position: absolute;
-  top: 20px;
-  right: 35px;
-  font-size: 40px;
-  color: #fff;
-  cursor: pointer;
-  font-weight: bold;
+    position: absolute;
+
+    top: 20px;
+    right: 35px;
+
+    font-size: 40px;
+    color: #fff;
+
+    cursor: pointer;
+    font-weight: bold;
+
+    z-index: 1002;
 }
 
 .close-btn:hover {
-  color: #ff5f5f;
+    color: #ff5f5f;
+}
+
+
+/* ============================
+   PREVIOUS & NEXT BUTTONS
+   ============================ */
+
+.prev-btn,
+.next-btn {
+
+    position: absolute;
+
+    top: 50%;
+    transform: translateY(-50%);
+
+    background-color: rgba(255, 255, 255, 0.2);
+
+    color: white;
+
+    border: none;
+
+    padding: 15px 20px;
+
+    font-size: 30px;
+
+    cursor: pointer;
+
+    border-radius: 5px;
+
+    z-index: 1001;
+
+    transition: background-color 0.2s ease;
+
+}
+
+/* Previous Button */
+
+.prev-btn {
+    left: 20px;
+}
+
+/* Next Button */
+
+.next-btn {
+    right: 20px;
+}
+
+
+/* Hover Effect */
+
+.prev-btn:hover,
+.next-btn:hover {
+
+    background-color: rgba(255, 255, 255, 0.5);
+
+}
+
+
+/* ============================
+   MOBILE RESPONSIVE DESIGN
+   ============================ */
+
+@media (max-width: 600px) {
+
+    .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .gallery-item img {
+        height: 120px;
+    }
+
+    .lightbox img {
+        max-width: 75%;
+        max-height: 75%;
+    }
+
+    .prev-btn,
+    .next-btn {
+        padding: 10px 14px;
+        font-size: 22px;
+    }
+
+    .prev-btn {
+        left: 8px;
+    }
+
+    .next-btn {
+        right: 8px;
+    }
+
+    .close-btn {
+        top: 10px;
+        right: 15px;
+        font-size: 32px;
+    }
+
+}
+/* ============================
+   KEYBOARD FOCUS STYLES
+   ============================ */
+
+/* Focus effect for buttons */
+
+.prev-btn:focus-visible,
+.next-btn:focus-visible,
+.close-btn:focus-visible {
+
+    outline: 3px solid #00ffff;
+
+    outline-offset: 4px;
+
+}
+
+
+/* Button active effect */
+
+.prev-btn:active,
+.next-btn:active {
+
+    transform: translateY(-50%) scale(0.9);
+
+}
+
+
+/* ============================
+   KEYBOARD SHORTCUT INFO
+   ============================ */
+
+.shortcut-info {
+
+    position: absolute;
+
+    bottom: 20px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    color: white;
+
+    font-size: 14px;
+
+    text-align: center;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    padding: 8px 15px;
+
+    border-radius: 5px;
+
 }

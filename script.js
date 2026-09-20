@@ -2,65 +2,195 @@
 // GRAB THE ELEMENTS WE NEED
 // ============================
 
-// The gallery container that holds all the images
 const gallery = document.getElementById("gallery");
 
-// The lightbox popup box and the image inside it
 const lightbox = document.getElementById("lightbox");
+
 const lightboxImg = document.getElementById("lightboxImg");
 
-// The "X" button used to close the lightbox
 const closeBtn = document.getElementById("closeBtn");
+
+const prevBtn = document.getElementById("prevBtn");
+
+const nextBtn = document.getElementById("nextBtn");
+
 
 // ============================
 // GET ALL GALLERY IMAGES
 // ============================
 
-// This finds every <img> tag that is inside an element with class "gallery-item"
 const galleryImages = gallery.querySelectorAll(".gallery-item img");
 
+
+// Current Image Index
+
+let currentIndex = 0;
+
+
 // ============================
-// OPEN THE LIGHTBOX ON CLICK
+// OPEN THE LIGHTBOX
 // ============================
 
-// Loop through every single image in the gallery
-galleryImages.forEach(function (image) {
+galleryImages.forEach(function (image, index) {
 
-  // Add a "click" event listener to each image
-  image.addEventListener("click", function () {
+    image.addEventListener("click", function () {
 
-    // Set the lightbox image's source to match the clicked image
-    lightboxImg.src = image.src;
+        currentIndex = index;
 
-    // Also copy the alt text, which is good for accessibility
-    lightboxImg.alt = image.alt;
+        lightboxImg.src = image.src;
 
-    // Show the lightbox by adding the "active" class (see style.css)
-    lightbox.classList.add("active");
-  });
+        lightboxImg.alt = image.alt;
+
+        lightbox.classList.add("active");
+
+    });
+
 });
 
+
 // ============================
-// CLOSE THE LIGHTBOX
+// SHOW IMAGE FUNCTION
 // ============================
 
-// Close when the "X" button is clicked
+function showImage(index) {
+
+    if (index < 0) {
+
+        currentIndex = galleryImages.length - 1;
+
+    }
+
+    else if (index >= galleryImages.length) {
+
+        currentIndex = 0;
+
+    }
+
+    else {
+
+        currentIndex = index;
+
+    }
+
+
+    lightboxImg.src = galleryImages[currentIndex].src;
+
+    lightboxImg.alt = galleryImages[currentIndex].alt;
+
+}
+
+
+// ============================
+// NEXT BUTTON
+// ============================
+
+nextBtn.addEventListener("click", function () {
+
+    showImage(currentIndex + 1);
+
+});
+
+
+// ============================
+// PREVIOUS BUTTON
+// ============================
+
+prevBtn.addEventListener("click", function () {
+
+    showImage(currentIndex - 1);
+
+});
+
+
+// ============================
+// CLOSE LIGHTBOX
+// ============================
+
 closeBtn.addEventListener("click", function () {
-  lightbox.classList.remove("active");
+
+    lightbox.classList.remove("active");
+
 });
 
-// Also close if the user clicks the dark background (outside the image)
+
+// Close by clicking background
+
 lightbox.addEventListener("click", function (event) {
-  // "event.target" is the exact element that was clicked.
-  // We only close if they clicked the background, not the image itself.
-  if (event.target === lightbox) {
-    lightbox.classList.remove("active");
-  }
+
+    if (event.target === lightbox) {
+
+        lightbox.classList.remove("active");
+
+    }
+
 });
 
-// Bonus: allow closing the lightbox by pressing the "Escape" key
+
+// ============================
+// KEYBOARD SHORTCUTS
+// ============================
+
 document.addEventListener("keydown", function (event) {
-  if (event.key === "Escape") {
-    lightbox.classList.remove("active");
-  }
+
+    // ESC = Close Lightbox
+
+    if (event.key === "Escape") {
+
+        lightbox.classList.remove("active");
+
+    }
+
+
+    // Only navigate when lightbox is open
+
+    if (!lightbox.classList.contains("active")) {
+
+        return;
+
+    }
+
+
+    // RIGHT ARROW = NEXT IMAGE
+
+    if (event.key === "ArrowRight") {
+
+        event.preventDefault();
+
+        showImage(currentIndex + 1);
+
+    }
+
+
+    // LEFT ARROW = PREVIOUS IMAGE
+
+    else if (event.key === "ArrowLeft") {
+
+        event.preventDefault();
+
+        showImage(currentIndex - 1);
+
+    }
+
+
+    // HOME = FIRST IMAGE
+
+    else if (event.key === "Home") {
+
+        event.preventDefault();
+
+        showImage(0);
+
+    }
+
+
+    // END = LAST IMAGE
+
+    else if (event.key === "End") {
+
+        event.preventDefault();
+
+        showImage(galleryImages.length - 1);
+
+    }
+
 });
